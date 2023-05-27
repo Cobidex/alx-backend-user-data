@@ -85,15 +85,16 @@ def main():
     cnx = get_db()
     cur = cnx.cursor()
     cur.execute('SELECT * FROM users')
+    f_names = [i[0] for i in cur.description]
     result = cur.fetchall()
 
-    for row in results:
-        formatted_row = '; '.join(str(value) for value in row)
-        logger.info(formatted_row)
+    for row in result:
+        formatted_row = ''.join(f'{f}={v}; ' for f, v in zip(f_names, row))
+        logger.info(formatted_row.strip())
 
-    cursor.close()
-    db.close()
+    cur.close()
+    cnx.close()
 
 
-if __name__ = '__main__':
+if __name__ == '__main__':
     main()
