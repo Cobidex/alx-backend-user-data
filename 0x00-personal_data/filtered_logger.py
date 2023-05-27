@@ -4,6 +4,8 @@ contains the filter_datum function
 '''
 import logging
 import re
+from os import getenv
+import mysql.connector as m_c
 from typing import List, Tuple
 
 PII_FIELDS: Tuple[str, ...] = ("name", "email", "phone", "ssn", "password")
@@ -36,6 +38,21 @@ def get_logger() -> logging.Logger:
     logger.addHandler(stream_handler)
 
     return logger
+
+
+def get_db() -> m_c.connection.MySQLConnection:
+    '''
+    returns a connector to a database
+    '''
+    host = getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    user = getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    password = getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    database = getenv('PERSONAL_DATA_DB_NAME')
+    connection = m_c.connection.MySQLConnection(host=host,
+                                                user=user,
+                                                password=password,
+                                                database=database)
+    return connection
 
 
 class RedactingFormatter(logging.Formatter):
