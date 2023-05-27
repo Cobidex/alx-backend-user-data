@@ -74,3 +74,26 @@ class RedactingFormatter(logging.Formatter):
         message = super().format(record)
         return filter_datum(self.fields, self.REDACTION,
                             message, self.SEPARATOR)
+
+
+def main():
+    '''
+    display database querry result in desired format
+    '''
+    logger = get_logger()
+
+    cnx = get_db()
+    cur = cnx.cursor()
+    cur.execute('SELECT * FROM users')
+    result = cur.fetchall()
+
+    for row in results:
+        formatted_row = '; '.join(str(value) for value in row)
+        logger.info(formatted_row)
+
+    cursor.close()
+    db.close()
+
+
+if __name__ = '__main__':
+    main()
