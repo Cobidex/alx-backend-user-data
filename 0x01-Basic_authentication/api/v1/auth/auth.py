@@ -18,8 +18,7 @@ class Auth:
         if path is None or excluded_paths is None or excluded_paths == []:
             return True
 
-        if f"{path}/" in excluded_paths or path in excluded_paths:
-            return False
+        path = path if path.endswith('/') else f"{path}/"
 
         for pa in excluded_paths:
             if pa is None:
@@ -27,7 +26,7 @@ class Auth:
             elif pa.endswith('*'):
                 if path.startswith(pa[:-1]):
                     return False
-            elif f"{path}/" == pa or path == pa:
+            elif pa == path:
                 return False
             else:
                 return True
