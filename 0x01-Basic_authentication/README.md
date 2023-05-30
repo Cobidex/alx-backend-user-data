@@ -1,1 +1,1 @@
-Project to implemenmt the basic authentication using the Base64 encoding to aid http transmission of authenntication credentials
+# Simple api for learning basic authentication using Base64 encoding for http protocol
