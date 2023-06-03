@@ -4,6 +4,8 @@ contains the SessionAuth class
 """
 from api.v1.auth.auth import Auth
 import uuid
+from models.user import User
+from typing import TypeVar
 
 
 class SessionAuth(Auth):
@@ -27,3 +29,13 @@ class SessionAuth(Auth):
         if not isinstance(session_id, str):
             return None
         return SessionAuth.user_id_by_session_id.get(session_id)
+
+    def current_user(self, request=None):
+        """
+        returns a User instance based on a cookie value
+        """
+        s_id: str = self.session_cookie(request)
+        u_id: str = self.user_id_for_session_id(s_id)
+        user: TypeVar('User') = User.get(u_id)
+
+        return user
