@@ -4,6 +4,7 @@ contains the auth class for user authentication
 """
 from flask import request
 from typing import List, TypeVar
+from os import getenv
 
 
 class Auth:
@@ -43,3 +44,12 @@ class Auth:
         """
         Validates the current client """
         return None
+
+    def session_cookie(self, request=None):
+        """
+        returns a cookie value from a request
+        """
+        if request is None:
+            return None
+        _my_session_id = getenv('SESSION_NAME')
+        return request.cookies.get(_my_session_id)
