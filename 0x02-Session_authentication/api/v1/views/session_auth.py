@@ -2,7 +2,7 @@
 """
 views for session authentication routes
 """
-from flask import request, jsonify, make_response
+from flask import abort, request, jsonify, make_response
 from api.v1.views import app_views
 from models.user import User
 from os import getenv
