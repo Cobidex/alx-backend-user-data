@@ -39,8 +39,9 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **kwargs: str) -> User:
-        """ finds and returns a user """
+    def find_user_by(self, **kwargs) -> User:
+        """finds and returns a user
+        """
         try:
             user = self._session.query(User).filter_by(**kwargs).first()
             if user is None:
@@ -48,3 +49,14 @@ class DB:
             return user
         except InvalidRequestError:
             raise
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """updates user attributes with passed arguments
+        """
+        for k in kwargs.keys():
+            if k not in User.__table__.columns.keys():
+                raise ValueError
+        user = self.find_user_by(id=user_id)
+        for k, v in kwargs.items():
+            user.k = v
+        return None
