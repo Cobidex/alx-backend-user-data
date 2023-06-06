@@ -41,12 +41,10 @@ class DB:
 
     def find_user_by(self, **kwargs: dict) -> User:
         """ finds and returns a user """
-        if kwargs is None:
-            raise InvalidRequestError
-        for k in kwargs.keys():
-            if k not in User.__table__.columns.keys():
-                raise InvalidRequestError
-        user = self._session.query(User).filter_by(**kwargs).first()
-        if not user:
-            raise NoResultFound
-        return user
+        try:
+            user = self._session.query(User).filter_by(**kwargs).first()
+            if user is None:
+                raise NoResultFound
+            return user
+        except InvalidRequestError:
+            raise
