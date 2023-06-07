@@ -12,6 +12,7 @@ def default():
     """ default route """
     return jsonify({"message": "Bienvenue"})
 
+
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def POST_user():
     """ registers a new user """
