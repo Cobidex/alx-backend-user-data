@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ sets up a flask app """
-from flask import Flask, jsonify, request, abort, make_response
+from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
 
 AUTH = Auth()
@@ -38,6 +38,18 @@ def login():
     response = make_response({"email": email, "message": "logged in"})
     response.set_cookie('session_id', session_id)
     return response
+
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout():
+    """ logs out a user """
+    session_id = request.cookies("session_id")
+    try:
+        user = AUTH.get_user_from_session_id(session_id)
+        user.session_id = None
+        redirect("/")
+    except NoResultFound:
+        abort(403)
 
 
 if __name__ == "__main__":
